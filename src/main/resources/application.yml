@@ -3,3 +3,7 @@ spring:
     name: easy-remote-mcp
   main:
     allow-bean-definition-overriding: true
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1
