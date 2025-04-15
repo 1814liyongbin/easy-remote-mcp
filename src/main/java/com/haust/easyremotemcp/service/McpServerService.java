@@ -1,7 +1,12 @@
 package com.haust.easyremotemcp.service;
 
-import com.haust.easyremotemcp.entity.McpServer;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.haust.easyremotemcp.entity.McpServer;
+import com.haust.easyremotemcp.vo.McpServerDetailVO;
+import com.haust.easyremotemcp.vo.McpServerListVO;
+import com.haust.easyremotemcp.vo.ResponseInfo;
+
+import java.util.List;
 
 /**
 * @author liyongbin
@@ -10,4 +15,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface McpServerService extends IService<McpServer> {
 
+    List<McpServerListVO> doList();
+
+    McpServerDetailVO detail(String id);
+
+    ResponseInfo<String> doSave(McpServerDetailVO detailVO);
 }

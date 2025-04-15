@@ -2,6 +2,9 @@ package com.haust.easyremotemcp.service;
 
 import com.haust.easyremotemcp.entity.Tool;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.haust.easyremotemcp.vo.ToolVO;
+
+import java.util.List;
 
 /**
 * @author liyongbin
@@ -10,4 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ToolService extends IService<Tool> {
 
+    List<ToolVO> getByServerId(Long id);
+
+    void removeByServerId(Long id);
+
+    void doSave(List<ToolVO> tools, Long id);
 }

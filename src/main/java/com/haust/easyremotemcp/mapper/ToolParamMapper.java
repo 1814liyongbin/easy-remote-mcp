@@ -2,6 +2,7 @@ package com.haust.easyremotemcp.mapper;
 
 import com.haust.easyremotemcp.entity.ToolParam;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author liyongbin
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2025-04-11 12:02:41
 * @Entity com.haust.easyremotemcp.entity.ToolParam
 */
+@Mapper
 public interface ToolParamMapper extends BaseMapper<ToolParam> {
 
 }

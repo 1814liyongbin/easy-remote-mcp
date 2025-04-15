@@ -27,7 +27,12 @@ public class McpServer {
     /**
      * 图片url
      */
-    private String url;
+    private String imgUrl;
+
+    /**
+     * 随机字符串
+     */
+    private String randomStr;
 
     /**
      * 描述

@@ -3,7 +3,31 @@ spring:
     name: easy-remote-mcp
   main:
     allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://********:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: '*******'
+    password: '*******'
+  web:
+    resources:
+      static-locations: classpath:/img
+  ai:
+    mcp:
+      server:
+        enabled: false
+        stdio: true
+#        name: easy-remote-mcp
+#        type: ASYNC
+#        sse-message-endpoint: /mcp/message
+#        base-url: /sse
 mybatis-plus:
   global-config:
     db-config:
       logic-delete-value: 1
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
