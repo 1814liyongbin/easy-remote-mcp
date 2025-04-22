@@ -35,6 +35,11 @@ public class ToolParam {
     private String description;
 
     /**
+     是否必需 0否 1是
+     */
+    private Integer required;
+
+    /**
       创建时间
      */
     private String createTime;

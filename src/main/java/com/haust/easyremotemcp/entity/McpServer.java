@@ -25,24 +25,19 @@ public class McpServer {
     private String name;
 
     /**
-     * 图片url
-     */
-    private String imgUrl;
-
-    /**
      * 随机字符串
      */
     private String randomStr;
 
     /**
+     * 密钥
+     */
+    private String secretKey;
+
+    /**
      * 描述
      */
     private String description;
-
-    /**
-     * 用户id
-     */
-    private Long userId;
 
     /**
      * 创建时间

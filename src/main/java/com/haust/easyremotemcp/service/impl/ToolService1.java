@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
  * @description:
  */
 @Service
-public class ToolService {
+public class ToolService1 {
 
-    @Tool(description = "实时查询天气")
-    public String getCityWeather(@ToolParam(description = "城市名称") String city) {
-        return city + "今天雨天";
+    @Tool(description = "查询天气")
+    public String getCityWeather(@ToolParam(description = "城市名称") String city, @ToolParam(description = "日期 示例格式 2025-01-01") String date) {
+        return city + " " + date + "雨天";
     }
 }

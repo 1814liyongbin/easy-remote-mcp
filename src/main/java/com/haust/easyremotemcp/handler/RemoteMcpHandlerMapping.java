@@ -50,10 +50,11 @@ public class RemoteMcpHandlerMapping extends AbstractHandlerMapping implements I
     @Override
     protected Mono<?> getHandlerInternal(ServerWebExchange exchange) {
         String randomStr = exchange.getRequest().getURI().getPath().split("/")[1];
-        if (StrUtil.isBlank(randomStr) || !mappings.containsKey(randomStr)){
+        if (StrUtil.isBlank(randomStr) || !mappings.containsKey(randomStr)) {
             return Mono.empty();
         }
         ServerRequest request = ServerRequest.create(exchange, this.messageReaders);
+        mappings.get(randomStr).route(request);
         return mappings.get(randomStr).route(request).doOnNext((handler) -> this.setAttributes(exchange.getAttributes(), request, handler));
     }
 
@@ -64,17 +65,20 @@ public class RemoteMcpHandlerMapping extends AbstractHandlerMapping implements I
     private void setAttributes(Map<String, Object> attributes, ServerRequest serverRequest, HandlerFunction<?> handlerFunction) {
         attributes.put(RouterFunctions.REQUEST_ATTRIBUTE, serverRequest);
         attributes.put(BEST_MATCHING_HANDLER_ATTRIBUTE, handlerFunction);
-        PathPattern matchingPattern = (PathPattern)attributes.get(RouterFunctions.MATCHING_PATTERN_ATTRIBUTE);
+        PathPattern matchingPattern = (PathPattern) attributes.get(RouterFunctions.MATCHING_PATTERN_ATTRIBUTE);
         if (matchingPattern != null) {
             attributes.put(BEST_MATCHING_PATTERN_ATTRIBUTE, matchingPattern);
             ServerHttpObservationFilter.findObservationContext(serverRequest.exchange()).ifPresent((context) -> context.setPathPattern(matchingPattern.toString()));
             ServerRequestObservationContext.findCurrent(serverRequest.exchange().getAttributes()).ifPresent((context) -> context.setPathPattern(matchingPattern.toString()));
         }
 
-        Map<String, String> uriVariables = (Map)attributes.get(RouterFunctions.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        Map<String, String> uriVariables = (Map) attributes.get(RouterFunctions.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         if (uriVariables != null) {
             attributes.put(URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriVariables);
         }
+    }
 
+    public void clear(String path) {
+        mappings.remove(path);
     }
 }

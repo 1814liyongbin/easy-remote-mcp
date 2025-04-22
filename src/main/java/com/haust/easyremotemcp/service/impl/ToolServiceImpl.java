@@ -3,7 +3,6 @@ package com.haust.easyremotemcp.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.extra.cglib.CglibUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.haust.easyremotemcp.entity.Tool;
@@ -16,6 +15,7 @@ import com.haust.easyremotemcp.vo.ToolVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -73,18 +73,21 @@ public class ToolServiceImpl extends ServiceImpl<ToolMapper, Tool>
 
     @Override
     public void doSave(List<ToolVO> tools, Long id) {
-        for (ToolVO toolVO : tools){
-            Tool tool = CglibUtil.copy(toolVO, Tool.class);
+        for (ToolVO toolVO : tools) {
+            Tool tool = BeanUtil.toBean(toolVO, Tool.class);
             tool.setCreateTime(DateUtil.now());
             tool.setUpdateTime(DateUtil.now());
             tool.setServerId(id);
             save(tool);
-            if (CollectionUtil.isNotEmpty(toolVO.getToolParam())){
-                List<ToolParam> toolParams = BeanUtil.copyToList(toolVO.getToolParam(), ToolParam.class);
-                for (ToolParam toolParam : toolParams) {
+            if (CollectionUtil.isNotEmpty(toolVO.getToolParam())) {
+                List<ToolParam> toolParams = new ArrayList<>(toolVO.getToolParam().size());
+                for (ToolParamVO toolParamVO : toolVO.getToolParam()) {
+                    ToolParam toolParam = BeanUtil.toBean(toolParamVO, ToolParam.class);
                     toolParam.setToolId(tool.getId());
+                    toolParam.setRequired(toolParamVO.getRequired());
                     toolParam.setCreateTime(DateUtil.now());
                     toolParam.setUpdateTime(DateUtil.now());
+                    toolParams.add(toolParam);
                 }
                 toolParamService.saveBatch(toolParams);
             }
