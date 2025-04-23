@@ -41,17 +41,17 @@ public class RemoteMcpToolCallback implements ToolCallback {
     @Override
     public String call(String toolInput) {
         JSONObject entries = JSONUtil.parseObj(toolInput);
-        if (StrUtil.equals(HttpMethod.GET.name(), toolVO.getMethod())){
+        if (StrUtil.equals(HttpMethod.GET.name(), toolVO.getMethod())) {
             StringBuilder url = new StringBuilder(toolVO.getUrl());
-            if (!entries.isEmpty()){
+            if (!entries.isEmpty()) {
                 url.append("?");
-                for (Map.Entry entry : entries.entrySet()){
+                for (Map.Entry entry : entries.entrySet()) {
                     url.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
                 }
                 url = new StringBuilder(url.substring(0, url.length() - 1));
             }
             return HttpUtil.get(url.toString());
-        }else {
+        } else {
             return HttpUtil.post(toolVO.getUrl(), entries.toString());
         }
     }

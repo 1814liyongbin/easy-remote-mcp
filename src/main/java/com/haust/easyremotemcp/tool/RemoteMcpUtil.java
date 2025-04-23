@@ -59,7 +59,7 @@ public class RemoteMcpUtil {
     public static List<RemoteMcpToolCallback> convertToolCallback(List<ToolVO> toolVOS) {
         return toolVOS.stream().map(toolVO -> RemoteMcpToolCallback.builder()
                 .toolVO(toolVO)
-                .toolDefinition(new DefaultToolDefinition(toolVO.getDescription(), toolVO.getDescription(), generateForMethodInput(toolVO.getToolParam())))
+                .toolDefinition(new DefaultToolDefinition(toolVO.getName(), toolVO.getDescription(), generateForMethodInput(toolVO.getToolParam())))
                 .toolMetadata(new DefaultToolMetadata(false))
                 .build()).toList();
     }

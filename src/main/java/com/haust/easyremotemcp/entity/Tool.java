@@ -25,6 +25,11 @@ public class Tool {
     private Long serverId;
 
     /**
+     * 名称
+     */
+    private String name;
+
+    /**
      * 描述
      */
     private String description;

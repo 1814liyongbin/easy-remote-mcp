@@ -25,11 +25,12 @@ import java.util.Map;
 /**
  * @author: liyongbin
  * @date: 2025/4/13 21:59
- * @description:
+ * @description: 路由映射
  */
 @Component
 public class RemoteMcpHandlerMapping extends AbstractHandlerMapping implements InitializingBean {
 
+    // 路由映射
     private final Map<String, RouterFunction<?>> mappings = new HashMap<>();
 
     private List<HttpMessageReader<?>> messageReaders = Collections.emptyList();
@@ -40,21 +41,22 @@ public class RemoteMcpHandlerMapping extends AbstractHandlerMapping implements I
     }
 
 
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (CollectionUtils.isEmpty(this.messageReaders)) {
             ServerCodecConfigurer codecConfigurer = ServerCodecConfigurer.create();
             this.messageReaders = codecConfigurer.getReaders();
         }
     }
 
+
     @Override
     protected Mono<?> getHandlerInternal(ServerWebExchange exchange) {
+        // 获取路径随机字符串 mcp server的唯一标识
         String randomStr = exchange.getRequest().getURI().getPath().split("/")[1];
         if (StrUtil.isBlank(randomStr) || !mappings.containsKey(randomStr)) {
             return Mono.empty();
         }
         ServerRequest request = ServerRequest.create(exchange, this.messageReaders);
-        mappings.get(randomStr).route(request);
         return mappings.get(randomStr).route(request).doOnNext((handler) -> this.setAttributes(exchange.getAttributes(), request, handler));
     }
 

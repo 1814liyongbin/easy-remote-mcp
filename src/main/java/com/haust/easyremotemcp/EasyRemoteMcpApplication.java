@@ -40,6 +40,14 @@ public class EasyRemoteMcpApplication {
     }
 
 
+    /**
+     * 启动时初始化数据库中已存在的mcp server
+     * @param mcpServerService
+     * @param toolService
+     * @param toolParamService
+     * @param remoteMcpHandlerMapping
+     * @return
+     */
     @Bean
     public CommandLineRunner commandLineRunner(McpServerServiceImpl mcpServerService,
                                                ToolService toolService,

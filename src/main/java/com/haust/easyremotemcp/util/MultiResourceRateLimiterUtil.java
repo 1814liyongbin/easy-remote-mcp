@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class MultiResourceRateLimiterUtil {
     // 每日最大请求数
-    private static final int DAILY_LIMIT = 50;
+    private static final int DAILY_LIMIT = 500;
 
     // 限流器存储（线程安全）
     private final Map<String, Limiter> limiters = new ConcurrentHashMap<>();

@@ -114,17 +114,22 @@ public class McpServerServiceImpl extends ServiceImpl<McpServerMapper, McpServer
             toolService.doSave(detailVO.getTools(), mcpServer.getId());
         }
         if (ObjectUtil.isEmpty(mcpServer.getId()) || !serverMap.containsKey(randomStr)) {
+            // 创建新的mcp server协议
             WebFluxSseServerTransportProvider transportProvider = new WebFluxSseServerTransportProvider(new ObjectMapper(), "", "/" + randomStr + "/sse/message", "/" + randomStr + "/sse");
             McpSchema.Implementation serverInfo = new McpSchema.Implementation(mcpServer.getName(), "1.0.0");
             io.modelcontextprotocol.server.McpServer.AsyncSpecification serverBuilder = io.modelcontextprotocol.server.McpServer.async(transportProvider).serverInfo(serverInfo);
+            // 获取工具
             List<RemoteMcpToolCallback> remoteMcpToolCallbacks = RemoteMcpUtil.convertToolCallback(detailVO.getTools());
             List<McpServerFeatures.AsyncToolSpecification> asyncToolSpecification = toAsyncToolSpecification(remoteMcpToolCallbacks);
+            // 为新的mcp server添加工具
             serverBuilder.tools(asyncToolSpecification);
             McpSchema.ServerCapabilities build = McpSchema.ServerCapabilities.builder().tools(true).build();
             serverBuilder.capabilities(build);
             McpAsyncServer asyncServer = serverBuilder.build();
+            // 添加到map中 以便后续更新删除
             serverMap.put(randomStr, asyncServer);
             toolSpecificationMap.put(randomStr, asyncToolSpecification);
+            // 添加新的mcp server路由
             remoteMcpHandlerMapping.addMapping(randomStr, transportProvider.getRouterFunction());
         } else {
             McpAsyncServer mcpAsyncServer = serverMap.get(randomStr);
